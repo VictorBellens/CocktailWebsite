@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cocktail Website</title>
+</head>
+
+<style>
+
+body {
+    z-index: 2;
+    background-color: #5CDB95;}
+
+.topnav {
+    text-align: center;}
+
+
+.topbar {
+  border: 2px outset black;
+  background-color: #EDF5E1;
+  text-align: center;}
+
+
+.leftbar {
+    border: 2px outset black;
+    background-color: #907163;
+    text-align: center;
+
+    float: left;
+    margin: auto;
+    width: 25%;}
+
+
+.rightbar {
+    border: 2px outset black;
+    background-color: #379683;
+    text-align: center;
+
+    float: right;
+    margin: auto;
+    width: 25%;}
+
+
+.centerbar {
+    border: 2px outset black;
+    background-color: #8EE4AF
+    text-align: center;
+
+    float: center;
+    margin: auto;
+    width: 49%;}
+
+
+
+</style>
+
+<body>
+
+<div class="topnav">
+  <a class="active" href="">Home</a>
+  <a href="browse/">Browse cocktails</a>
+  <a href="search/">Search</a>
+  <a href="profile/">Profile</a>
+    </div>
+
+
+<form action="{% url 'searchmembers' %}" method="get">
+    <input type="text" name="searchmembers"/>
+    <button type="submit">Search</button>
+</form>
+
+</body>
+</html>
