@@ -7,60 +7,123 @@
 
 <style>
 
+@import url('https://fonts.googleapis.com/css2?family=Andika+New+Basic:wght@700&display=swap');
+
 body {
-    z-index: 2;
-    background-color: #5CDB95;}
+    margin: 0;
+    padding: 0;
+    font-family: 'Andika New Basic', sans-serif;
+    background-color: hsl(0, 0%, 15%);
+    color: white;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    font-size: 20px;
+    
+    animation-name: fadeInUp;
+    animation-duration: 1s;
+    transition-timing-function: ease-in-out;
+}
 
 .topnav {
-    text-align: center;}
+    width: 100%;
+    height: 3.5em;
+    background-color: #161616;
+    overflow: hidden;
+    box-shadow: 2px -4px 20px 2px black;
+    
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+}
 
-
-.topbar {
-  border: 2px outset black;
-  background-color: #EDF5E1;
-  text-align: center;}
-
-
-.leftbar {
-    border: 2px outset black;
-    background-color: #907163;
-    text-align: center;
-
+.topnav a {
     float: left;
-    margin: auto;
-    width: 25%;}
-
-
-.rightbar {
-    border: 2px outset black;
-    background-color: #379683;
+    color: white;
     text-align: center;
+    padding: 20px;
+    margin: 20px;
+    text-decoration: none;
+    font-size: 17px;
 
-    float: right;
-    margin: auto;
-    width: 25%;}
+    transition: 0.5s;
 
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+}
+.topnav a:hover {
+    background-color: hsl(103, 48%, 54%);
+    color: white;
+}
 
-.centerbar {
-    border: 2px outset black;
-    background-color: #8EE4AF
-    text-align: center;
+.topnav a.active {
+    background-color: hsl(70, 64%, 55%);
+    color: white;
+}
 
-    float: center;
-    margin: auto;
-    width: 49%;}
+input[type=text]{
+    width: 60%;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    display: block;
+    margin: 20rem auto 0;
+    border-radius: 20px;
+    box-shadow: 4px 4px 10px 5px black;
+}
+
+button {
+    display: block;
+    margin: 3rem auto 0;
+
+    padding: 10px 30px;
+    border-radius: 15px;
+    background-color: hsl(70, 64%, 55%);
+
+    font-weight: bold;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
 
 </style>
 
 
 <body>
 
+<div class="title">
+    <h1>Cocktail Search</h1>
+</div>
+
 <div class="topnav">
-  <a class="active" href="">Home</a>
-  <a href="browse/">Browse cocktails</a>
-  <a href="search/">Search</a>
-  <a href="profile/">Profile</a>
-    </div>
+    <a class="active" href="/">Home</a>
+    <a href="browse/">Browse cocktails</a>
+    <a href="search/">Search</a>
+    <a href="profile/">Profile</a>
+</div>
 
 
 <form action="{% url 'searchcocktails' %}" method="get">

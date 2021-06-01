@@ -1,61 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
-
-
-
-
 <style>
 
+@import url('https://fonts.googleapis.com/css2?family=Andika+New+Basic:wght@700&display=swap');
+
 body {
-    z-index: 2;
-    background-color: #5CDB95;}
+    margin: 0;
+    padding: 0;
+    font-family: 'Andika New Basic', sans-serif;
+    background-color: hsl(0, 0%, 15%);
+    background-image: url("https://images.unsplash.com/photo-1606924734836-d83a46fade21?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+}
+
+.header {
+    width: 100%;
+    height: 30rem;
+    height: 30rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10rem;
+
+    font-size: 42px;
+    background-color: rgba(63, 63, 63, 0.8);
+    border-radius: 20px;
+
+    animation-name: fadeInUp;
+    animation-duration: 1s;
+    transition-timing-function: ease-in-out;
+}
 
 .topnav {
-    text-align: center;}
+    width: 100%;
+    height: 3.5em;
+    background-color: #161616;
+    overflow: hidden;
+    box-shadow: 2px -4px 20px 2px black;
+    
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+}
 
-
-.topbar {
-  border: 2px outset black;
-  background-color: #EDF5E1;
-  text-align: center;}
-
-
-.leftbar {
-    border: 2px outset black;
-    background-color: #907163;
-    text-align: center;
-
+.topnav a {
     float: left;
-    margin: auto;
-    width: 25%;}
-
-
-.rightbar {
-    border: 2px outset black;
-    background-color: #379683;
+    color: white;
     text-align: center;
+    padding: 20px;
+    margin: 20px;
+    text-decoration: none;
+    font-size: 17px;
 
-    float: right;
-    margin: auto;
-    width: 25%;}
+    transition: 0.5s;
 
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+}
+.topnav a:hover {
+    background-color: hsl(103, 48%, 54%);
+    color: white;
+}
 
-.centerbar {
-    border: 2px outset black;
-    background-color: #8EE4AF
-    text-align: center;
+.topnav a.active {
+    background-color: hsl(70, 64%, 55%);
+    color: white;
+}
 
-    float: center;
-    margin: auto;
-    width: 49%;}
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
 
 </style>
-
-
-
-
 
 <head>
     <meta charset="UTF-8">
@@ -63,65 +101,20 @@ body {
 </head>
 
 
-
-
-
-
 <body>
 
-<div class="topbar">
-  <h1>Cocktail Website</h1>
-
-    <div class="topnav">
-  <a class="active" href="">Home</a>
-  <a href="browse/">Browse cocktails</a>
-  <a href="search/">Search</a>
-  <a href="profile/">Profile</a>
-    </div>
-
-    <br>
-    <br>
+<div class="topnav">
+    <a class="active" href="">Home</a>
+    <a href="browse/">Browse cocktails</a>
+    <a href="search/">Search</a>
+    <a href="profile/">Profile</a>
 </div>
 
-<br>
-
-<div class="leftbar">
-    <h4>This is the left sidebar</h4>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-</div>
-
-<div class="rightbar">
-    <h4>This is the right sidebar</h4>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-</div>
-
-<div class="centerbar">
-    <h4>This is the center bar</h4>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+<div class="header">
+    <h1>Cocktail Website</h1>
 </div>
 
 </body>
-
-
-
-
-
-
 
 </html>
 
