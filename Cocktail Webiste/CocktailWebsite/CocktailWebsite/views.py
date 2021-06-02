@@ -119,6 +119,7 @@ def browse_cocktails(request):
             number_of_cocktails += 1
             final_string = string + str(number_of_cocktails)
             context[final_string] = cocktail
+            
         context['number_of_cocktails'] = number_of_cocktails
         context['all'] = contents
         context['option'] = option
@@ -134,5 +135,3 @@ def verifylogin(request):
     password = request.GET.get('password')
 
     bucket_value = get_username_information(username)[3]
-
-# Comment

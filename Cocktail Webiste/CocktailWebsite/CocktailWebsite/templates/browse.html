@@ -1,48 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
-<div class="topnav">
-    <a href="">Home</a>
-    <a class ="active" href="browse/">Browse cocktails</a>
-    <a href="search/">Search</a>
-    <a href="profile/">Profile</a>
-</div>
 <head>
     <meta charset="UTF-8">
     <title>Browse</title>
 </head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Andika+New+Basic:wght@700&display=swap');
+    
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Andika New Basic', sans-serif;
+        background-color: hsl(0, 0%, 15%);
+        color: white;
+    }
+    
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+        font-size: 20px;
+        
+        animation-name: fadeInUp;
+        animation-duration: 1s;
+        transition-timing-function: ease-in-out;
+    }
+    
+    .topnav {
+        width: 100%;
+        height: 3.5em;
+        background-color: #161616;
+        overflow: hidden;
+        box-shadow: 2px -4px 20px 2px black;
+        
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
+        
+        position: sticky;
+        position: -webkit-sticky;
+        top: 0;
+    }
+    
+    .topnav a {
+        float: left;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin: 20px;
+        text-decoration: none;
+        font-size: 17px;
+    
+        transition: 0.5s;
+    
+        animation-name: fadeIn;
+        animation-duration: 0.5s;
+    }
+    .topnav a:hover {
+        background-color: hsl(103, 48%, 54%);
+        color: white;
+    }
+    
+    .topnav a.active {
+        background-color: hsl(70, 64%, 55%);
+        color: white;
+    }
+    
+    .form-wrapper {
+        margin-top: 5rem;
+        margin-left: 10rem;
+    }
+    
+    .cocktail-list {
+        margin-top: 2rem;
+        margin-left: 10rem;
+        width: 80%;
+    }
+
+    .cocktail-info {
+        margin-top: 2rem;
+        margin-left: 10rem;
+        width: 80%;
+    }
+
+    .all-cocktails {
+        margin-top: 2rem;
+        margin-left: 10rem;
+        width: 80%;        
+    }
+    
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(25px);
+        }
+    
+        100% {
+            opacity: 1;
+            transform: none;
+        }
+    }
+</style>
+
+
 <body>
 
+    <div class="title">
+        <h1>Browse Cocktails</h1>
+    </div>
 
-<label>Choose a ranking ID:</label>
-<form method = "get" action = "">
-    {% csrf_token %}
-<select name = "drop1" >
-                    <option value="1">IBA approved</option>
-                    <option value="2">Popular</option>
-                    <option value="3">Custom cocktails</option>
-</select>
-<input  type = "submit" value="Submit">
-</form>
+    <div class="topnav">
+        <a class="active" href="/">Home</a>
+        <a href="browse/">Browse cocktails</a>
+        <a href="search/">Search</a>
+        <a href="profile/">Profile</a>
+    </div>
 
+    <div class="form-wrapper">
+        <label>Choose a ranking ID:</label>
+        <form method = "get" action = "">
+            {% csrf_token %}
+        <select name = "drop1" >
+                            <option value="1">IBA approved</option>
+                            <option value="2">Popular</option>
+                            <option value="3">Custom cocktails</option>
+        </select>
+        <input  type = "submit" value="Submit">
+        </form>
+    </div>
 
+    <div class="cocktail-list" id="cocktail-list">
+        <!-- <p>Cocktail 1: {{list1}}</p>
+        <p>Cocktail 2: {{list2}}</p> -->
+        
+        {% for cocktails in all %}
+            <p>Cocktail {{forloop.counter}}: {{list1}}</p>
+        {% endfor %}
 
-<br>
-<br>
-<br>
+    </div>
 
-'list1': {{list1}}
-<br>
-<br>
-'list2': {{list2}}
-<br>
-<br>
-number of cocktails: {{number_of_cocktails}}
-<br>
-<br>
-every cocktail: {{all}}
-<br>
-<br>
-ranking_ID option is set at: {{option}}
+    <div class="cocktail-info">
+        <p>Number of Cocktails In Database: {{number_of_cocktails}}</p>
+        <p>Ranking ID option is set at: {{option}}</p>
+    </div>
+
+    <div class="all-cocktails">
+        <p>Avaliable Cocktails: {{all}}</p>
+    </div>
 
 </body>
+
+
 </html>

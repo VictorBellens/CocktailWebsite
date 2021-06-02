@@ -114,22 +114,22 @@ button {
 
 <body>
 
-<div class="title">
-    <h1>Cocktail Search</h1>
-</div>
+    <div class="title">
+        <h1>Cocktail Search</h1>
+    </div>
 
-<div class="topnav">
-    <a class="active" href="/">Home</a>
-    <a href="browse/">Browse cocktails</a>
-    <a href="search/">Search</a>
-    <a href="profile/">Profile</a>
-</div>
+    <div class="topnav">
+        <a class="active" href="/">Home</a>
+        <a href="browse/">Browse cocktails</a>
+        <a href="search/">Search</a>
+        <a href="profile/">Profile</a>
+    </div>
 
 
-<form action="{% url 'searchcocktails' %}" method="get">
-    <input type="text" name="searchcocktails"/>
-    <button type="submit">Search</button>
-</form>
+    <form action="{% url 'searchcocktails' %}" method="get">
+        <input type="text" name="searchcocktails"/>
+        <button type="submit">Search</button>
+    </form>
 
 </body>
 </html>
