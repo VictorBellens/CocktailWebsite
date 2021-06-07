@@ -1,5 +1,8 @@
 from cryptography.fernet import Fernet
 
+
+user_string = "jack"
+
 username = "jack"
 password = "jack123!"
 new_password = {}

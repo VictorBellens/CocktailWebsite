@@ -101,3 +101,12 @@ def get_username_information(username):
         information = cursor.fetchone()
 
     return information
+
+
+def find_password_key(bucket_value):
+    with sqlite3.connect("CWDatabase.db") as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM Passwords where bucket=?", (bucket_value, ))
+        bucket = cursor.fetchone()
+
+    return bucket

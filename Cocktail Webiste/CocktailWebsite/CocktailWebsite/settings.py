@@ -54,7 +54,7 @@ ROOT_URLCONF = 'CocktailWebsite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [r'D:\Coding\Projects\CocktailWebsite\Cocktail Webiste\CocktailWebsite\CocktailWebsite\templates'],
+        'DIRS': [r'C:\Users\vicbe\OneDrive\Desktop\CocktailWebsite\Cocktail Webiste\CocktailWebsite\CocktailWebsite\templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
