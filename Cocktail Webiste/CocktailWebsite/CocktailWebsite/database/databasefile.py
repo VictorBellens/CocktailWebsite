@@ -106,7 +106,7 @@ def get_username_information(username):
 def find_password_key(bucket_value):
     with sqlite3.connect("CWDatabase.db") as db:
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM Passwords where bucket=?", (bucket_value, ))
+        cursor.execute("SELECT hashed_key FROM Passwords where bucket=?", (bucket_value, ))
         bucket = cursor.fetchone()
 
     return bucket

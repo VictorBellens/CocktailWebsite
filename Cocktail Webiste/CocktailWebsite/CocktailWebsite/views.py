@@ -1,9 +1,12 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from .database.databasefile import *
+from .security import *
+import ast
 
 from tabulate import tabulate
 
-
+with open('LoginToken.txt', 'w') as f:
+    f.write('false')
 
 # URL REDIRECTS
 
@@ -131,8 +134,23 @@ def browse_cocktails(request):
 
 
 def verifylogin(request):
+    global total_bucket, final_bucket
+
     username = request.GET.get('username')
     password = request.GET.get('password')
 
-    bucket_value = get_username_information(username)[3]
-    print(bucket_value)
+    try:
+        bucket_value = get_username_information(username)[3]
+        total_bucket = find_password_key(bucket_value)
+        final_bucket = ast.literal_eval(total_bucket[0])
+
+    except TypeError:
+        print('Invalid credentials.')
+
+    for dictionary in final_bucket:
+        if dec_message(dictionary, username) == password:
+            print('Successfully signed in.')
+            with open('LoginToken.txt', 'w') as f:
+                f.write('true')
+
+            return render(request, 'menu.html')

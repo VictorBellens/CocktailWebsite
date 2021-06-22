@@ -58,19 +58,19 @@ def enc_message(message):
 bucket_value = find_bucket_value(username, password)
 new_password[username] = enc_message(password)
 
-print(bucket_value)
-print(new_password)
+# print(bucket_value)
+# print(new_password)
 
 
-def dec_message(message):
-    final_username = ""
-    final_password = ""
-    key = new_password[username][0]
+def dec_message(message, name):
+    key = message[name][0]
+    password = message[name][1]
 
     fernet = Fernet(key)
-    decMessage = fernet.decrypt(message).decode()
+    decMessage = fernet.decrypt(password).decode()
 
     return decMessage
 
 
-print(dec_message(new_password[username][1]))
+print(new_password)
+print(dec_message(new_password, username))
