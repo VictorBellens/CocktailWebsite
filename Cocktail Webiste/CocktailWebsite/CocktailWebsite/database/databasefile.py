@@ -110,3 +110,59 @@ def find_password_key(bucket_value):
         bucket = cursor.fetchone()
 
     return bucket
+
+
+# ADDING COCKTAILS
+
+def get_amount_values():
+    with sqlite3.connect("CWDatabase.db") as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT value FROM Amounts", ())
+        result = cursor.fetchall()
+
+    return result
+
+
+def get_ingredient_values():
+    with sqlite3.connect('CWDatabase.db') as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT ingredient from Ingredients", ())
+        result = cursor.fetchall()
+
+    return result
+
+
+def find_amount_id(combined):
+    with sqlite3.connect("CWDatabase.db") as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT amount_id FROM Amounts where value=?", (combined[1],))
+        result = cursor.fetchone()
+
+    return result
+
+
+def find_ingredient_id(combined):
+    with sqlite3.connect("CWDatabase.db") as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT ingredient_id from Ingredients where ingredient=?", (combined[0],))
+        result = cursor.fetchone()
+
+    return result
+
+
+def add_new_cocktail(contents):
+    string = 'combined'
+    i = 0
+
+    for combined in contents:
+        i += 1
+        ingredient_value = find_ingredient_id(combined[0])
+        amount_value = find_amount_id(combined[1])
+
+
+
+    with sqlite3.connect("CWDatabase.db") as db:
+        cursor = db.cursor()
+        cursor.execute("")
+
+

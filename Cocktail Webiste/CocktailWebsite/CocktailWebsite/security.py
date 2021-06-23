@@ -72,5 +72,6 @@ def dec_message(message, name):
     return decMessage
 
 
-print(new_password)
-print(dec_message(new_password, username))
+# print(new_password)
+# print(dec_message(new_password, username))
+

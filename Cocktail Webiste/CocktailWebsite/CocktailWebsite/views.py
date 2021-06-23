@@ -5,9 +5,6 @@ import ast
 
 from tabulate import tabulate
 
-with open('LoginToken.txt', 'w') as f:
-    f.write('false')
-
 # URL REDIRECTS
 
 
@@ -47,18 +44,19 @@ def searchmembers(request):
     if request.method == 'GET':
         search = request.GET.get('searchmembers')
 
-        try:
-            contents = select_member(search)
-            context = {
-                'identifier': contents[0],
-                'name': contents[1],
-                'image': contents[2]
-            }
-
-            return render(request, 'msearchresults.html', context=context)
-
-        except TypeError:
+        contents = select_member(search)
+        if contents is None:
             return render(request, 'error.html')
+
+        context = {
+            'identifier': contents[0],
+            'name': contents[1],
+            'image': contents[2],
+            'bucket': contents[3]
+        }
+
+        return render(request, 'msearchresults.html', context=context)
+
 
 
 def searchcocktails(request):
@@ -139,13 +137,9 @@ def verifylogin(request):
     username = request.GET.get('username')
     password = request.GET.get('password')
 
-    try:
-        bucket_value = get_username_information(username)[3]
-        total_bucket = find_password_key(bucket_value)
-        final_bucket = ast.literal_eval(total_bucket[0])
-
-    except TypeError:
-        print('Invalid credentials.')
+    bucket_value = get_username_information(username)[3]
+    total_bucket = find_password_key(bucket_value)
+    final_bucket = ast.literal_eval(total_bucket[0])
 
     for dictionary in final_bucket:
         if dec_message(dictionary, username) == password:
@@ -154,3 +148,39 @@ def verifylogin(request):
                 f.write('true')
 
             return render(request, 'menu.html')
+
+
+# CREATE COCKTAIL FUNCTIONS
+
+
+def add_user_cocktail(request):
+
+    amounts = get_amount_values()
+    ingredients = get_ingredient_values()
+
+    if request.method == 'GET':
+        data = {
+            'amounts': amounts,
+            'ingredients': ingredients,
+        }
+
+        combined1 = [request.GET.get('ingredient1'), request.GET.get('amount1')]
+        combined2 = [request.GET.get('ingredient2'), request.GET.get('amount2')]
+        combined3 = [request.GET.get('ingredient3'), request.GET.get('amount3')]
+        combined4 = [request.GET.get('ingredient4'), request.GET.get('amount4')]
+        combined5 = [request.GET.get('ingredient5'), request.GET.get('amount5')]
+        combined6 = [request.GET.get('ingredient6'), request.GET.get('amount6')]
+        combined7 = [request.GET.get('ingredient7'), request.GET.get('amount7')]
+        combined8 = [request.GET.get('ingredient8'), request.GET.get('amount8')]
+        combined9 = [request.GET.get('ingredient9'), request.GET.get('amount9')]
+        combined10 = [request.GET.get('ingredient10'), request.GET.get('amount10')]
+        name = request.GET.get('name')
+        instructions = request.GET.get('instructions')
+        type = request.GET.get('type')
+        additional_notes = request.GET.get('additional_notes')
+
+        print(amounts)
+        print(ingredients)
+        print(combined1, combined2, combined3)
+
+        return render(request, 'addcocktail.html', {'data': data})
