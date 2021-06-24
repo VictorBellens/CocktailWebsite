@@ -135,8 +135,11 @@ def get_ingredient_values():
 def find_amount_id(combined):
     with sqlite3.connect("CWDatabase.db") as db:
         cursor = db.cursor()
-        cursor.execute("SELECT amount_id FROM Amounts where value=?", (combined[1],))
+        cursor.execute("SELECT amount_id FROM Amounts where value=?", (combined,))
         result = cursor.fetchone()
+
+        if result is None:
+            result = (0,)
 
     return result
 
@@ -144,25 +147,32 @@ def find_amount_id(combined):
 def find_ingredient_id(combined):
     with sqlite3.connect("CWDatabase.db") as db:
         cursor = db.cursor()
-        cursor.execute("SELECT ingredient_id from Ingredients where ingredient=?", (combined[0],))
+        cursor.execute("SELECT ingredient_id from Ingredients where ingredient=?", (combined,))
         result = cursor.fetchone()
+
+        if result is None:
+            result = (0,)
 
     return result
 
 
 def add_new_cocktail(contents):
-    string = 'combined'
-    i = 0
+    combined_list = []
 
     for combined in contents:
-        i += 1
-        ingredient_value = find_ingredient_id(combined[0])
-        amount_value = find_amount_id(combined[1])
+        combined_ids = []
 
+        ingredient_value = find_ingredient_id(str(combined[0]))
+        amount_value = find_amount_id(str(combined[1]))
 
+        combined_ids.append(ingredient_value[0])
+        combined_ids.append(amount_value[0])
 
-    with sqlite3.connect("CWDatabase.db") as db:
-        cursor = db.cursor()
-        cursor.execute("")
+        combined_list.append(combined_ids)
+    print(combined_list)
+
+   # with sqlite3.connect("CWDatabase.db") as db:
+    #    cursor = db.cursor()
+     #   cursor.execute("")
 
 

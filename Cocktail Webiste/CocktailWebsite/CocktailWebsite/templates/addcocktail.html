@@ -199,6 +199,32 @@
 
     </select>
 
+    <select name="amount7" id="amount7">
+
+    {% for key, value in data.items %}
+        {% if key == 'amounts' %}
+        {% for amount in value %}
+            <option> {{ amount.0 }}</option>
+        {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+    </select>
+<br>
+
+
+
+    <select name="ingredient8" id="ingredient8">
+
+    {% for key, value in data.items %}
+        {% if key == 'ingredients' %}
+        {% for amount in value %}
+            <option> {{ amount.0 }}</option>
+        {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+    </select>
 
     <select name="amount8" id="amount8">
 

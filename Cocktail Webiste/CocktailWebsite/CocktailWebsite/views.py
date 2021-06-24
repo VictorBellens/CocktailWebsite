@@ -179,8 +179,13 @@ def add_user_cocktail(request):
         type = request.GET.get('type')
         additional_notes = request.GET.get('additional_notes')
 
-        print(amounts)
-        print(ingredients)
-        print(combined1, combined2, combined3)
+        combined_list = [combined1, combined2, combined3, combined4, combined5, combined6, combined7, combined8,
+                         combined9, combined10]
 
-        return render(request, 'addcocktail.html', {'data': data})
+
+        if combined1[0] is None:
+            return render(request, 'addcocktail.html', {'data': data})
+
+        else:
+            print(combined_list)
+            add_new_cocktail(combined_list)
