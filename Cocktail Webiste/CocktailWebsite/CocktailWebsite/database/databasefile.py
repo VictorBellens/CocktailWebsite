@@ -13,11 +13,9 @@ def select_cocktail(id):
 
 
 def select_member(name):
-    name = ' '.join(w[0].upper() + w[1:] for w in name.split())
-
     with sqlite3.connect("CWDatabase.db") as db:
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM Members where name=?", (name, ))
+        cursor.execute("SELECT * FROM Members where name=?", (name.lower(), ))
         member = cursor.fetchone()
         return member
 
@@ -94,6 +92,8 @@ def browse(choice):
     return browse_results
 
 
+# SECURITY
+
 def get_username_information(username):
     with sqlite3.connect("CWDatabase.db") as db:
         cursor = db.cursor()
@@ -110,6 +110,15 @@ def find_password_key(bucket_value):
         bucket = cursor.fetchone()
 
     return bucket
+
+
+def find_identifier(username):
+    with sqlite3.connect("CWDatabase.db") as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT indentifier FROM Members where name=?", (username, ))
+        identifier = cursor.fetchone()
+
+    return identifier[0]
 
 
 # ADDING COCKTAILS
@@ -156,23 +165,67 @@ def find_ingredient_id(combined):
     return result
 
 
-def add_new_cocktail(contents):
+def add_new_combined(combined):
+    with sqlite3.connect("CWDatabase.db") as db:
+        cursor = db.cursor()
+        cursor.execute('INSERT INTO Combined(amount_id, ingredient_id)'
+                       'VALUES(?, ?)', (combined[1], combined[0]))
+        db.commit()
+
+        cursor.execute('SELECT combined_id from Combined where amount_id=? and ingredient_id=?', (combined[1], combined[0]))
+        result = cursor.fetchone()
+    return result
+
+
+def add_new_cocktail(contents, meta):
     combined_list = []
+    combined_id_list = []
 
-    for combined in contents:
-        combined_ids = []
+    try:
+        for combined in contents:
+            combined_ids = []
 
-        ingredient_value = find_ingredient_id(str(combined[0]))
-        amount_value = find_amount_id(str(combined[1]))
+            ingredient_value = find_ingredient_id(str(combined[0]))
+            amount_value = find_amount_id(str(combined[1]))
 
-        combined_ids.append(ingredient_value[0])
-        combined_ids.append(amount_value[0])
+            combined_ids.append(ingredient_value[0])
+            combined_ids.append(amount_value[0])
 
-        combined_list.append(combined_ids)
-    print(combined_list)
+            combined_list.append(combined_ids)
+        print(combined_list)
 
-   # with sqlite3.connect("CWDatabase.db") as db:
-    #    cursor = db.cursor()
-     #   cursor.execute("")
+        for combined in combined_list:
+            combined_id_list.append(add_new_combined(combined)[0])
+
+        print(combined_id_list)
+        print(meta)
+
+        with sqlite3.connect("CWDatabase.db") as db:
+            cursor = db.cursor()
+
+            cursor.execute("INSERT INTO Cocktails (drink, instructions, type, ranking_id, combined1, combined2, combined3, "
+                           "combined4, combined5, combined6, combined7, combined8, combined9, combined10, additional_notes)"
+                           "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                           (meta[0], meta[1], meta[2], 3, combined_id_list[0], combined_id_list[1], combined_id_list[2],
+                            combined_id_list[3], combined_id_list[4], combined_id_list[5], combined_id_list[6],
+                            combined_id_list[7], combined_id_list[8], combined_id_list[9], meta[3])
+                           )
+            db.commit()
+        return True
+
+    except SyntaxError:
+        return False
+
+    except sqlite3.IntegrityError:
+        return sqlite3.IntegrityError
 
 
+# PROFILE
+
+def get_user_cocktails(identifier):
+    with sqlite3.connect("CWDatabase.db") as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT * from Cocktails where identifier=?", (identifier,))
+        result = cursor.fetchall()
+
+    return result

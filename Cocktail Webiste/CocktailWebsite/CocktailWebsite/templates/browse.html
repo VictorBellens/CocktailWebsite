@@ -118,10 +118,10 @@
     </div>
 
     <div class="topnav">
-        <a class="active" href="/">Home</a>
-        <a href="browse/">Browse cocktails</a>
-        <a href="search/">Search</a>
-        <a href="profile/">Profile</a>
+        <a href="/home/">Home</a>
+        <a class="active" href="/browse/">Browse cocktails</a>
+        <a href="/search/">Search</a>
+        <a href="/profile/">Profile</a>
     </div>
 
     <div class="form-wrapper">
@@ -142,18 +142,47 @@
         <p>Cocktail 2: {{list2}}</p> -->
         
         {% for cocktails in all %}
-            <p>Cocktail {{forloop.counter}}: {{list1}}</p>
+        <p><font size="+4">{{cocktails.0}}</font></p>
+        <p><font size="+2">Type:</font> {{cocktails.2}}</p>
+        <p><font size="+2">Instructions: </font> {{cocktails.1}}</p>
+
+
+            <font size="+2">Ingredients:</font>
+
+            {% for cocktail in values %}
+                {% for drink in cocktail %}
+                    {% if cocktail.0 == cocktails.0 %}
+                        {% if drink != cocktail.0 %}
+                            <p> {{drink.0.0}}
+                                {{drink.1.0}}
+                            </p>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+
+        <p><font size="+2">Additional Notes: </font>{{cocktails.16}}</p>
+
         {% endfor %}
+
+
+
+
 
     </div>
 
+
+<br><br>
     <div class="cocktail-info">
         <p>Number of Cocktails In Database: {{number_of_cocktails}}</p>
         <p>Ranking ID option is set at: {{option}}</p>
     </div>
 
     <div class="all-cocktails">
-        <p>Avaliable Cocktails: {{all}}</p>
+        Avaliable Cocktails:
+        {% for cocktail in all %}
+            <p>{{forloop.counter}}.   {{cocktail.0}}</p>
+        {% endfor %}
     </div>
 
 </body>

@@ -1,7 +1,9 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from .database.databasefile import *
 from .security import *
+from .account import *
 import ast
+
 
 from tabulate import tabulate
 
@@ -13,15 +15,18 @@ def search(request):
 
 
 def menu(request):
-    return render(request, 'menu.html')
+    global user
 
-
-def profile(request):
-    return render(request, 'profile.html')
+    if user.login_token:
+        print(user.username)
+        return render(request, 'menu.html')
+    else:
+        print('Please log in to use this feature')
 
 
 def browseurl(request):
     browse_cocktails(request)
+
 
 def login(request):
     return render(request, 'login.html')
@@ -56,7 +61,6 @@ def searchmembers(request):
         }
 
         return render(request, 'msearchresults.html', context=context)
-
 
 
 def searchcocktails(request):
@@ -110,19 +114,38 @@ def browse_cocktails(request):
     if request.method == "GET":
         option = request.GET.get('drop1')
 
+        values = []
         contents = browse(option)
         context = {}
 
         number_of_cocktails = 0
-        string = 'list'
 
         for cocktail in contents:
+            value_amounts = []
+            cocktail = list(cocktail)
+            i = 6
+
+            value_amounts.append(cocktail[0])
+            while i < 16:
+                combined = []
+                combined_ids = get_combined(cocktail[i])
+                combined.append(get_ingredient(combined_ids[1]))
+                combined.append(get_amount(combined_ids[0]))
+
+                cocktail[i] = combined
+
+                value_amounts.append(combined)
+
+                i += 1
+
             number_of_cocktails += 1
-            final_string = string + str(number_of_cocktails)
-            context[final_string] = cocktail
+
+            values.append(value_amounts)
 
         context['number_of_cocktails'] = number_of_cocktails
         context['all'] = contents
+        context['values'] = values
+
         context['option'] = option
 
         return render(request, 'browse.html', context=context)
@@ -130,9 +153,20 @@ def browse_cocktails(request):
 
 # LOGIN FUNCTIONS
 
+def create_user():
+    global user
+
+    try:
+        print(user.login_token)
+
+    except NameError:
+        user = Login('', 0)
+
 
 def verifylogin(request):
     global total_bucket, final_bucket
+
+    create_user()
 
     username = request.GET.get('username')
     password = request.GET.get('password')
@@ -143,17 +177,26 @@ def verifylogin(request):
 
     for dictionary in final_bucket:
         if dec_message(dictionary, username) == password:
+            global user
+
             print('Successfully signed in.')
-            with open('LoginToken.txt', 'w') as f:
-                f.write('true')
+            user = Login(username, find_identifier(username))
+            user.amend_token()
 
             return render(request, 'menu.html')
+
+        elif dec_message(dictionary, username) != password:
+            print('Incorrect information, please try agian.')
+
+        else:
+            print('Error')
 
 
 # CREATE COCKTAIL FUNCTIONS
 
 
 def add_user_cocktail(request):
+    meta = []
 
     amounts = get_amount_values()
     ingredients = get_ingredient_values()
@@ -182,10 +225,33 @@ def add_user_cocktail(request):
         combined_list = [combined1, combined2, combined3, combined4, combined5, combined6, combined7, combined8,
                          combined9, combined10]
 
+        meta.append(name)
+        meta.append(instructions)
+        meta.append(type)
+        meta.append(additional_notes)
 
         if combined1[0] is None:
             return render(request, 'addcocktail.html', {'data': data})
 
         else:
-            print(combined_list)
-            add_new_cocktail(combined_list)
+            print(add_new_cocktail(combined_list, meta))
+
+
+# PROFILE
+
+
+def profile(request):
+    print(user.identifier)
+    print(user.username)
+
+    context = {}
+    personal_cocktails = get_user_cocktails(user.identifier)
+    personal_information = select_member(user.username)
+
+    if request.method == 'GET':
+        context['personal_information'] = personal_information
+        context['personal_cocktails'] = personal_cocktails
+
+        print(context)
+
+        return render(request, 'profile.html', context=context)
