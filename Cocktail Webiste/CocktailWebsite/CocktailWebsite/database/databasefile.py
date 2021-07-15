@@ -1,4 +1,6 @@
 import sqlite3
+import ast
+
 login_key = 'Jack'
 
 
@@ -121,6 +123,15 @@ def find_identifier(username):
     return identifier[0]
 
 
+def get_usernames():
+    with sqlite3.connect("CWDatabase.db") as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT name FROM Members", ())
+        names = cursor.fetchall()
+
+    return names
+
+
 # ADDING COCKTAILS
 
 def get_amount_values():
@@ -203,12 +214,13 @@ def add_new_cocktail(contents, meta):
         with sqlite3.connect("CWDatabase.db") as db:
             cursor = db.cursor()
 
-            cursor.execute("INSERT INTO Cocktails (drink, instructions, type, ranking_id, combined1, combined2, combined3, "
-                           "combined4, combined5, combined6, combined7, combined8, combined9, combined10, additional_notes)"
-                           "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                           (meta[0], meta[1], meta[2], 3, combined_id_list[0], combined_id_list[1], combined_id_list[2],
-                            combined_id_list[3], combined_id_list[4], combined_id_list[5], combined_id_list[6],
-                            combined_id_list[7], combined_id_list[8], combined_id_list[9], meta[3])
+            cursor.execute("INSERT INTO Cocktails (drink, instructions, type, ranking_id, identifier, combined1, combined2, "
+                           "combined3, combined4, combined5, combined6, combined7, combined8, combined9, combined10,"
+                           "additional_notes)"
+                           "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                           (meta[0], meta[1], meta[2], 3, meta[4], combined_id_list[0], combined_id_list[1],
+                            combined_id_list[2], combined_id_list[3], combined_id_list[4], combined_id_list[5],
+                            combined_id_list[6], combined_id_list[7], combined_id_list[8], combined_id_list[9], meta[3])
                            )
             db.commit()
         return True
@@ -229,3 +241,27 @@ def get_user_cocktails(identifier):
         result = cursor.fetchall()
 
     return result
+
+
+def add_user_to_members(username, bucket):
+    with sqlite3.connect("CWDatabase.db") as db:
+        cursor = db.cursor()
+        cursor.execute('INSERT INTO Members (name, bucket)'
+                       'VALUES(?, ?)', (username, bucket))
+        db.commit()
+
+
+def add_to_passwords(username, password_key_pair, bucket):
+    dictionary = {username: password_key_pair}
+
+    with sqlite3.connect("CWDatabase.db") as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT hashed_key from Passwords where bucket=?", (bucket,))
+        bucket_contents = cursor.fetchone()
+
+        final_bucket = ast.literal_eval(bucket_contents[0])
+        final_bucket.append({username: password_key_pair})
+        print(final_bucket)
+
+        cursor.execute("UPDATE Passwords SET hashed_key=? WHERE bucket=?", (str(final_bucket), bucket))
+        db.commit()

@@ -3,6 +3,7 @@ from .database.databasefile import *
 from .security import *
 from .account import *
 import ast
+import sqlite3
 
 
 from tabulate import tabulate
@@ -17,11 +18,18 @@ def search(request):
 def menu(request):
     global user
 
+    try:
+        user.login_token
+
+    except NameError:
+        return render(request, 'login.html', context={'bypass_fault': True})
+
     if user.login_token:
-        print(user.username)
         return render(request, 'menu.html')
     else:
-        print('Please log in to use this feature')
+        print('Please login to use this feature.')
+        # return render(request, 'requestLogin.html')
+
 
 
 def browseurl(request):
@@ -30,6 +38,10 @@ def browseurl(request):
 
 def login(request):
     return render(request, 'login.html')
+
+
+def redirect_account(request):
+    return render(request, 'new_account.html')
 
 
 # SEARCH FUNCTIONS
@@ -50,8 +62,9 @@ def searchmembers(request):
         search = request.GET.get('searchmembers')
 
         contents = select_member(search)
+
         if contents is None:
-            return render(request, 'error.html')
+            return render(request, 'smembers.html', context={'user_does_not_exist': True})
 
         context = {
             'identifier': contents[0],
@@ -97,13 +110,14 @@ def searchcocktails(request):
                 'ingredient9': get_ingredient(get_combined(contents[14])[1])[0],
                 'ingredient10': get_ingredient(get_combined(contents[15])[1])[0],
                 'additional_notes': contents[16],
+                'exists' : True
 
             }
 
             return render(request, "csearchresults.html", context=context)
 
         except TypeError:
-            return render(request, 'error.html')
+            return render(request, "scocktails.html", context={'does_not_exist': True})
 
 
 # BROWSE FUNCTIONS
@@ -151,7 +165,7 @@ def browse_cocktails(request):
         return render(request, 'browse.html', context=context)
 
 
-# LOGIN FUNCTIONS
+# LOGIN / CREATE ACCOUNT FUNCTIONS
 
 def create_user():
     global user
@@ -162,6 +176,8 @@ def create_user():
     except NameError:
         user = Login('', 0)
 
+# get_username_information(username)[3]
+
 
 def verifylogin(request):
     global total_bucket, final_bucket
@@ -171,7 +187,7 @@ def verifylogin(request):
     username = request.GET.get('username')
     password = request.GET.get('password')
 
-    bucket_value = get_username_information(username)[3]
+    bucket_value = find_bucket_value(username, password)
     total_bucket = find_password_key(bucket_value)
     final_bucket = ast.literal_eval(total_bucket[0])
 
@@ -192,10 +208,45 @@ def verifylogin(request):
             print('Error')
 
 
+def create_account(request):
+    username = request.GET.get('username')
+    password1 = request.GET.get('password1')
+    password2 = request.GET.get('password2')
+
+    new_account = CreateAccount(username, password1, password2)
+    checked = new_account.check_account_details()
+
+    if checked is True:
+        # ACCOUNT IS VALID
+        print('valid account')
+
+        password_key_pair = enc_message(new_account.password1)
+        bucket = find_bucket_value(new_account.username, new_account.password1)
+
+        add_to_passwords(new_account.username, password_key_pair, bucket)
+        add_user_to_members(new_account.username, bucket)
+
+        return render(request, 'login.html', context={'account_created': True})
+
+
+
+    elif type(checked) is list:
+        print('errors creating account')
+        string = 'error'
+        context = {}
+
+        for error in checked:
+            error_name = string + str(error)
+            context[error_name] = True
+
+        return render(request, 'new_account.html', context=context)
+
+
 # CREATE COCKTAIL FUNCTIONS
 
 
 def add_user_cocktail(request):
+    global user
     meta = []
 
     amounts = get_amount_values()
@@ -229,12 +280,31 @@ def add_user_cocktail(request):
         meta.append(instructions)
         meta.append(type)
         meta.append(additional_notes)
+        meta.append(user.identifier)
 
         if combined1[0] is None:
             return render(request, 'addcocktail.html', {'data': data})
 
         else:
-            print(add_new_cocktail(combined_list, meta))
+            success_boolean = add_new_cocktail(combined_list, meta)
+
+            if success_boolean is True:
+                return render(request, 'menu.html')
+
+
+            elif success_boolean is False:
+                error_message = 1
+                'syntax error'
+
+            elif success_boolean is sqlite3.IntegrityError:
+                error_message = 2
+                'unique name error'
+
+            else:
+                error_message = 3
+                'unknown error'
+
+            return render(request, 'error.html', {'error_number': error_message})
 
 
 # PROFILE

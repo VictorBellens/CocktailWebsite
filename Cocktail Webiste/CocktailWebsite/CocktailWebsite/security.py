@@ -1,10 +1,5 @@
 from cryptography.fernet import Fernet
 
-
-user_string = "jack"
-
-username = "jack"
-password = "jack123!"
 new_password = {}
 
 bucket0 = []
@@ -55,8 +50,8 @@ def enc_message(message):
     return key_hash_pair
 
 
-bucket_value = find_bucket_value(username, password)
-new_password[username] = enc_message(password)
+# bucket_value = find_bucket_value(username, password)
+# new_password[username] = enc_message(password)
 
 # print(bucket_value)
 # print(new_password)
@@ -74,4 +69,3 @@ def dec_message(message, name):
 
 # print(new_password)
 # print(dec_message(new_password, username))
-

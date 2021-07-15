@@ -2,45 +2,147 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cocktail Website Search</title>
+    <title>Browse</title>
 </head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Andika+New+Basic:wght@700&display=swap');
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Andika New Basic', sans-serif;
+        background-color: hsl(0, 0%, 15%);
+        color: white;
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+        font-size: 40px;
+
+        animation-name: fadeInUp;
+        animation-duration: 1s;
+        transition-timing-function: ease-in-out;
+    }
+
+    .topnav {
+        width: 100%;
+        height: 3.5em;
+        background-color: #161616;
+        overflow: hidden;
+        box-shadow: 2px -4px 20px 2px black;
+
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
+
+        position: sticky;
+        position: -webkit-sticky;
+        top: 0;
+    }
+
+    .topnav a {
+        float: left;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin: 20px;
+        text-decoration: none;
+        font-size: 17px;
+
+        transition: 0.5s;
+
+        animation-name: fadeIn;
+        animation-duration: 0.5s;
+    }
+    .topnav a:hover {
+        background-color: hsl(103, 48%, 54%);
+        color: white;
+    }
+
+    .topnav a.active {
+        background-color: hsl(70, 64%, 55%);
+        color: white;
+    }
+
+    .form-wrapper {
+        margin-top: 5rem;
+        margin-left: 10rem;
+    }
+
+    .cocktail-list {
+        margin-top: 2rem;
+        margin-left: 10rem;
+        width: 80%;
+    }
+
+    .cocktail-info {
+        margin-top: 2rem;
+        margin-left: 10rem;
+        width: 80%;
+    }
+
+    .all-cocktails {
+        margin-top: 2rem;
+        margin-left: 10rem;
+        width: 80%;
+    }
+
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(25px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: none;
+        }
+    }
+</style>
+
+
+
 
 <body>
 
-<table style="width:80%">
-  <tr>
-    <th>Name</th>
-    <th>Directions</th>
-    <th>Type</th>
-    <th>Ingredient 1</th>
-    <th>Ingredient 2</th>
-    <th>Ingredient 3</th>
-    <th>Ingredient 4</th>
-    <th>Ingredient 5</th>
-    <th>Ingredient 6</th>
-    <th>Ingredient 7</th>
-    <th>Ingredient 8</th>
-    <th>Ingredient 9</th>
-    <th>Ingredient 10</th>
-    <th>Additional notes</th>
-  </tr>
-  <tr>
-    <td>{{name}}</td>
-    <td>{{directions}}</td>
-    <td>{{type}}</td>
-    <td>{{amount1}}{{ingredient1}}</td>
-    <td>{{amount2}}{{ingredient2}}</td>
-    <td>{{amount3}}{{ingredient3}}</td>
-    <td>{{amount4}}{{ingredient4}}</td>
-    <td>{{amount5}}{{ingredient5}}</td>
-    <td>{{amount6}}{{ingredient6}}</td>
-    <td>{{amount7}}{{ingredient7}}</td>
-    <td>{{amount8}}{{ingredient8}}</td>
-    <td>{{amount9}}{{ingredient9}}</td>
-    <td>{{amount10}}{{ingredient10}}</td>
-    <td>{{additional_notes}}</td>
-  </tr>
-</table>
+  <div class="title">
+        <h1>Search Cocktails</h1>
+    </div>
 
+  <div class="topnav">
+    <a href="/home/">Home</a>
+    <a href="/browse/">Browse cocktails</a>
+    <a class="active" href="/search/">Search</a>
+    <a href="/profile/">Profile</a>
+  </div>
+
+
+  <div class="cocktail-list" id="cocktail-list">
+    {% if exists %}
+      <p><font size="+4"> {{name}} </font></p>
+      <p><font size="+2">Type:</font> {{type}}</p>
+      <p><font size="+2">Instructions: </font>{{directions}}</p>
+
+      <p><font size="+2">Ingredients: </font></p>
+      <p>{{ingredient1}} {{amount1}}<br>{{ingredient2}} {{amount2}}<br>{{ingredient3}} {{amount3}}<br>
+        {{ingredient4}} {{amount4}}<br>{{ingredient5}} {{amount5}}<br>{{ingredient6}} {{amount6}} <br>
+        {{ingredient7}} {{amount7}}<br>{{ingredient8}} {{amount8}}<br>{{ingredient9}} {{amount9}} <br>
+        {{ingredient10}} {{amount10}}
+      </p>
+      <p><font size="+2">Additional Notes: </font>{{additional_notes}}</p>
+    {% endif %}
+
+  </div>
 </body>
+
 </html>

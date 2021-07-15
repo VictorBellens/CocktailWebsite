@@ -8,6 +8,10 @@ urlpatterns = [
 
     path('', views.login, name='login'),
     path('verifyLogin/', views.verifylogin, name='verifylogin'),
+
+    path('createaccount/', views.redirect_account, name='redirect_account'),
+    path('creatingaccount/', views.create_account, name='creatingaccount'),
+
     path('login/', views.login, name='login'),
     path('verifyLogin/', views.verifylogin, name='verifylogin'),
 
