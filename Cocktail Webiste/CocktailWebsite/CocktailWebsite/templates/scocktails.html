@@ -99,6 +99,16 @@
         font-family: Helvetica, Arial, sans-serif;
     }
 
+    .center_choices {
+        float: center;
+        color: white;
+        text-align: center;
+        margin-top: 2rem;
+        margin-left: 10rem;
+        width: 80%;
+    }
+
+
     @keyframes fadeIn {
         0% { opacity: 0; }
         100% { opacity: 1; }
@@ -131,20 +141,42 @@
         <a href="/browse/">Browse cocktails</a>
         <a class="active" href="/search/">Search</a>
         <a href="/profile/">Profile</a>
+        <a href="/addcocktail/">Create New Cocktail</a>
     </div>
 
 
+
     <div>
+
+
         <form action="{% url 'searchcocktails' %}" method="get">
             <input type="text" name="searchcocktails"/>
-
             {% if does_not_exist %}
                 <div class="does_not_exist_error">
                       Sorry, this cocktail does not exist, please try again.
                 </div>
             {% endif %}
+
+            <div class="center_choices">
+                <form action="{% url 'filter_search' %}" method="get">
+                    <select name="ingredient" id="filter_ingredients">
+                        {% for key, value in data.items %}
+                                {% if key == 'ingredients' %}
+                                    {% for ingredient in value %}
+                                        {% for value in ingredient %}
+                                            <option>{{ value }}</option>
+                                        {% endfor %}
+                                    {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+
             <button type="submit">Search</button>
         </form>
+
     </div>
 
 

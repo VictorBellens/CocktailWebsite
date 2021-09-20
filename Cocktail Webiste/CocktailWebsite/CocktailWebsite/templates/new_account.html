@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Account</title>
+</head>
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Andika+New+Basic:wght@700&display=swap');
@@ -90,6 +94,7 @@
 
     .forms {
         display: flex;
+        text-align: right;
         align-items: center;
         justify-content: center;
         padding: 4px;
@@ -97,6 +102,16 @@
 
     }
 
+    button {
+        display: block;
+        margin: 1rem auto 0;
+
+        padding: 10px 30px;
+        border-radius: 10px;
+        background-color: hsl(70, 64%, 55%);
+
+        font-weight: bold;
+    }
 
     .button_login {
         display: flex;
@@ -133,6 +148,12 @@
 
 <body>
 
+    <div style="height:200px; width:100%; clear:both;"></div>
+
+    <div class="title">
+        <h1>Create Account</h1>
+    </div>
+
 
     <div class="forms">
 
@@ -146,8 +167,13 @@
             retype password:
             <input type="password" name="password2">
             <br>
+
+            Private account
+            <input type="checkbox" id="private" name="private" value="True">
+            <br>
+
             <div class="button_login">
-                <button type="submit">Log in</button>
+                <button type="submit">Create account</button>
             </div>
 
         </form>

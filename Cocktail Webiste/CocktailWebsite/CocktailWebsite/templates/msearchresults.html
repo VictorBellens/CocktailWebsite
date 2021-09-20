@@ -124,15 +124,42 @@
     <a href="/browse/">Browse cocktails</a>
     <a class="active" href="/search/">Search</a>
     <a href="/profile/">Profile</a>
+    <a href="/addcocktail/">Create New Cocktail</a>
+  </div>
+
+  <div>
+      {% if error1 %}
+        Sorry, this user does not exist.
+      {% endif %}
   </div>
 
 
   <div class="cocktail-list" id="cocktail-list">
-      <p><font size="+4"> {{name.capitalize}} </font></p>
-      <p>Identifier: {{identifier}}</p>
-      <p>Profile picture: {{image}}</p>
+            {% for cocktails in personal_cocktails %}
+            <p><font size="+4">{{cocktails.0}}</font></p>
+            <p><font size="+2">Type:</font> {{cocktails.2}}</p>
+            <p><font size="+2">Instructions: </font> {{cocktails.1}}</p>
 
-  </div>
+
+                <font size="+2">Ingredients:</font>
+
+                {% for cocktail in values %}
+                    {% for drink in cocktail %}
+                        {% if cocktail.0 == cocktails.0 %}
+                            {% if drink != cocktail.0 %}
+                                <p> {{drink.0.0}}
+                                    {{drink.1.0}}
+                                </p>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+
+            <p><font size="+2">Additional Notes: </font>{{cocktails.16}}</p>
+
+            {% endfor %}
+
+`    </div>
 
 
 </body>

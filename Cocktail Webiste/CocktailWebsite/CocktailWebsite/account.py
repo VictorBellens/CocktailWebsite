@@ -4,14 +4,20 @@ from CocktailWebsite.database.databasefile import get_usernames
 class Login:
     login_token = False
 
-    def __init__(self, username, identifier):
+    def __init__(self, username, identifier): # login object that is created when the user logs in
         self.username = username
         self.identifier = identifier
 
     def amend_token(self):
         self.login_token = True
 
+    def reset_token(self):
+        self.login_token = False
+        self.username = ''
+        self.identifier = 0
 
+
+# checks to make sure that the password the user has entered is complex enough
 class CreateAccount:
     passwords_match = False
     password_complexity = False
@@ -91,7 +97,7 @@ class CreateAccount:
         self.username_in_database = True
         return self.username_in_database
 
-    def check_account_details(self):
+    def check_account_details(self): # uses all the functions above to check that the password is valid
         passwords_match = self.check_passwords_match()
         password_complexity = self.check_password_complexity()
         username_not_taken = self.check_username_in_database()
@@ -99,6 +105,6 @@ class CreateAccount:
         if passwords_match and password_complexity and username_not_taken:
             return True
 
-        else:
+        else: # returns error numbers depending on what is wrong with the password
             print(self.error_ids)
             return self.error_ids

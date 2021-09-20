@@ -69,9 +69,31 @@
         color: white;
     }
 
+        .cocktail-list {
+        margin-top: 2rem;
+        margin-left: 10rem;
+        width: 80%;
+    }
+
+    .cocktail-info {
+        margin-top: 2rem;
+        margin-left: 10rem;
+        width: 80%;
+    }
+
     .form-wrapper {
         margin-top: 5rem;
         margin-left: 10rem;
+    }
+
+    .logout {
+        float: right;
+        color: white;
+        align-text: right;
+
+        width: 70px;
+        padding: 10px;
+        margin: 10px;
     }
 
     @keyframes fadeIn {
@@ -95,20 +117,58 @@
 
 <body>
 
+    <div class="logout">
+            <img src="https://cdn-icons-png.flaticon.com/512/126/126467.png"
+                 width="50"
+                 height="50"
+                 onclick="location.href = '/login/'"/>
+    </div>
+
     <div class="title">
         <h1>Profile</h1>
     </div>
+
+
 
     <div class="topnav">
         <a href="/home/">Home</a>
         <a href="/browse/">Browse cocktails</a>
         <a href="/search/">Search</a>
         <a class="active" href="/profile/">Profile</a>
+        <a href="/addcocktail/">Create New Cocktail</a>
     </div>
 
 
-<br>
-{{personal_information.1}}
+    <div class="cocktail-list" id="cocktail-list">
+            {% for cocktails in personal_cocktails %}
+            <p><font size="+4">{{cocktails.0}}</font></p>
+            <p><font size="+2">Type:</font> {{cocktails.2}}</p>
+            <p><font size="+2">Instructions: </font> {{cocktails.1}}</p>
+
+
+                <font size="+2">Ingredients:</font>
+
+                {% for cocktail in values %}
+                    {% for drink in cocktail %}
+                        {% if cocktail.0 == cocktails.0 %}
+                            {% if drink != cocktail.0 %}
+                                <p> {{drink.0.0}}
+                                    {{drink.1.0}}
+                                </p>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+
+            <p><font size="+2">Additional Notes: </font>{{cocktails.16}}</p>
+
+            {% endfor %}
+
+       </div>
+
+
+
+
 <br>
 <br>
 

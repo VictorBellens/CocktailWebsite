@@ -122,9 +122,10 @@
         <a class="active" href="/browse/">Browse cocktails</a>
         <a href="/search/">Search</a>
         <a href="/profile/">Profile</a>
+        <a href="/addcocktail/">Create New Cocktail</a>
     </div>
 
-    <div class="form-wrapper">
+    <div class="form-wrapper"> <!-- Allows the user to choose a ranking id based on the three options below -->
         <label>Choose a ranking ID:</label>
         <form method = "get" action = "">
             {% csrf_token %}
@@ -138,7 +139,7 @@
     </div>
 
 
-    <div class="cocktail-list" id="cocktail-list">
+    <div class="cocktail-list" id="cocktail-list"> <!--displays all the cocktails in the context-->
         {% for cocktails in all %}
         <p><font size="+4">{{cocktails.0}}</font></p>
         <p><font size="+2">Type:</font> {{cocktails.2}}</p>
@@ -147,7 +148,7 @@
 
             <font size="+2">Ingredients:</font>
 
-            {% for cocktail in values %}
+            {% for cocktail in values %} <!--iterating through the context to locate ingreidents and amounts for each cocktail-->
                 {% for drink in cocktail %}
                     {% if cocktail.0 == cocktails.0 %}
                         {% if drink != cocktail.0 %}
@@ -170,14 +171,14 @@
     </div>
 
 
-<br><br>
+<br><br> <!--provides background information that is displayed for the users ease-->
     <div class="cocktail-info">
         <p>Number of Cocktails In Database: {{number_of_cocktails}}</p>
         <p>Ranking ID option is set at: {{option}}</p>
     </div>
 
     <div class="all-cocktails">
-        Avaliable Cocktails:
+        Available Cocktails:
         {% for cocktail in all %}
             <p>{{forloop.counter}}.   {{cocktail.0}}</p>
         {% endfor %}
